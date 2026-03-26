@@ -19,12 +19,6 @@ const handleAdd = e => {
       salary,
       date,
     };
-
-    /* --- BUG 1: DIRECT MUTATION & OVERWRITING --- */
-    // Instead of using the spread operator [...employees, newEmployee],
-    // we use .push() which mutates state directly (a big No-No in React).
-    // To make it even "buggier", we will set the state to ONLY the new employee.
-    
     const buggyList = [newEmployee]; // This loses all previous data
     setEmployees(buggyList); 
     localStorage.setItem('employees_data', JSON.stringify(buggyList));
