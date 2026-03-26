@@ -19,9 +19,9 @@ const handleAdd = e => {
       salary,
       date,
     };
-    const buggyList = [newEmployee]; // This loses all previous data
-    setEmployees(buggyList); 
-    localStorage.setItem('employees_data', JSON.stringify(buggyList));
+    const updatedEmployees = [...employees, newEmployee];
+    setEmployees(updatedEmployees);
+    localStorage.setItem('employees_data', JSON.stringify(updatedEmployees));
 
     /* --- BUG 2: MISSING STATE RESET --- */
     // Notice that setFirstName(''), setLastName(''), etc. are missing.
