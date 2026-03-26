@@ -34,10 +34,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
     }).then(result => {
-      if (result.value) {
-        // BUG 3: Logical error in filter. 
-        // Using strict equality with a string "id" instead of the variable makes it fail.
-        const employeesCopy = employees.filter(employee => employee.id === id);
+      if (result.isConfirmed) {
+        const employeesCopy = employees.filter(employee => employee.id !== Number(id));
 
         Swal.fire({
           icon: 'success',
@@ -55,8 +53,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   return (
     <div className="container">
-      {/* BUG 5: Removed !isEditing check so the table stays visible during editing */}
-      {!isAdding && (
+      <>{!isAdding && !isEditing && (
         <>
           <Header
             setIsAdding={setIsAdding}
@@ -84,6 +81,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           setIsEditing={setIsEditing}
         />
       )}
+      </>
     </div>
   );
 };
