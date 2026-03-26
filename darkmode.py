@@ -15,6 +15,7 @@ def toggle_mode():
         root.config(bg="black")
         button.config(bg="gray", fg="white")
         # BUG: Forgot to update is_dark here!
+        is_dark = True
 
 button = tk.Button(root, text="Toggle Dark Mode", command=toggle_mode)
 button.pack(pady=20)
