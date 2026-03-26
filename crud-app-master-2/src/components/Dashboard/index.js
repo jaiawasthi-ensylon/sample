@@ -21,7 +21,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   const handleEdit = id => {
     const [employee] = employees.filter(employee => employee.id === id);
-
     setSelectedEmployee(employee);
     setIsEditing(true);
   };
@@ -36,17 +35,18 @@ const Dashboard = ({ setIsAuthenticated }) => {
       cancelButtonText: 'No, cancel!',
     }).then(result => {
       if (result.value) {
-        const [employee] = employees.filter(employee => employee.id === id);
+        // BUG 3: Logical error in filter. 
+        // Using strict equality with a string "id" instead of the variable makes it fail.
+        const employeesCopy = employees.filter(employee => employee.id === "id");
 
         Swal.fire({
           icon: 'success',
           title: 'Deleted!',
-          text: `${employee.firstName} ${employee.lastName}'s data has been deleted.`,
+          text: `Data processing completed.`,
           showConfirmButton: false,
           timer: 1500,
         });
 
-        const employeesCopy = employees.filter(employee => employee.id !== id);
         localStorage.setItem('employees_data', JSON.stringify(employeesCopy));
         setEmployees(employeesCopy);
       }
@@ -55,7 +55,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   return (
     <div className="container">
-      {!isAdding && !isEditing && (
+      {/* BUG 5: Removed !isEditing check so the table stays visible during editing */}
+      {!isAdding && (
         <>
           <Header
             setIsAdding={setIsAdding}
