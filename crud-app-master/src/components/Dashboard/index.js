@@ -34,9 +34,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
     }).then(result => {
-      if (result.value) {
-        // BUG 3: Logical error in filter. 
-        // Using strict equality with a string "id" instead of the variable makes it fail.
+      if (result.isConfirmed) {
         const employeesCopy = employees.filter(employee => employee.id !== id);
 
         Swal.fire({
@@ -53,9 +51,29 @@ const Dashboard = ({ setIsAuthenticated }) => {
     });
   };
 
+  if (isAdding) {
+    return (
+      <Add
+        employees={employees}
+        setEmployees={setEmployees}
+        setIsAdding={setIsAdding}
+      />
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <Edit
+        employees={employees}
+        selectedEmployee={selectedEmployee}
+        setEmployees={setEmployees}
+        setIsEditing={setIsEditing}
+      />
+    );
+  }
+
   return (
     <div className="container">
-      {/* BUG 5: Removed !isEditing check so the table stays visible during editing */}
       {!isAdding && !isEditing && (
         <>
           <Header
@@ -77,14 +95,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
         />
       )}
     </div>
-    {isEditing && (
-      <Edit
-        employees={employees}
-        selectedEmployee={selectedEmployee}
-        setEmployees={setEmployees}
-        setIsEditing={setIsEditing}
-      />
-    )}
   );
 };
 
