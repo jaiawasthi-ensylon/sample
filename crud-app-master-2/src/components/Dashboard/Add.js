@@ -30,14 +30,18 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
       date,
     };
 
-    // BUG 1: Instead of appending, we overwrite the whole list with just the new entry
-    const buggyList = [newEmployee]; 
-    setEmployees(buggyList);
-    localStorage.setItem('employees_data', JSON.stringify(buggyList));
+    // Append the new employee to the existing list
+    const updatedEmployees = [...employees, newEmployee];
+    setEmployees(updatedEmployees);
+    localStorage.setItem('employees_data', JSON.stringify(updatedEmployees));
 
-    // BUG 2: Missing the setFirstName(''), setLastName(''), etc. calls.
-    // The inputs will stay filled with the previous data.
-    
+    // Reset form fields
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setSalary('');
+    setDate('');
+
     setIsAdding(false);
 
     Swal.fire({
