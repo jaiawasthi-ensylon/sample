@@ -37,6 +37,60 @@ const Dashboard = ({ setIsAuthenticated }) => {
       if (result.value) {
         // BUG 3: Logical error in filter. 
         // Using strict equality with a string "id" instead of the variable makes it fail.
+        const employeesCopy = employees.filter(employee => employee.id === "id");
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: `Data processing completed.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        localStorage.setItem('employees_data', JSON.stringify(employeesCopy));
+        setEmployees(employeesCopy);
+      }
+    });
+  };
+
+  return (
+    <div className="container">
+      {/* BUG 5: Removed !isEditing check so the table stays visible during editing */}
+      {!isAdding && (
+        <>
+          <Header
+            setIsAdding={setIsAdding}
+            setIsAuthenticated={setIsAuthenticated}
+          />
+          <Table
+            employees={employees}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        </>
+      )}
+      {isAdding && (
+        <Add
+          employees={employees}
+          setEmployees={setEmployees}
+          setIsAdding={setIsAdding}
+        />
+      )}
+      {isEditing && (
+        <Edit
+          employees={employees}
+          selectedEmployee={selectedEmployee}
+          setEmployees={setEmployees}
+          setIsEditing={setIsEditing}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;      if (result.value) {
+        // BUG 3: Logical error in filter. 
+        // Using strict equality with a string "id" instead of the variable makes it fail.
         const employeesCopy = employees.filter(employee => employee.id === id);
 
         Swal.fire({
