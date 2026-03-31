@@ -33,30 +33,27 @@ const Dashboard = ({ setIsAuthenticated }) => {
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
-    }).then(result => {
+    }).then(async result => {
       if (result.value) {
-        // BUG 3: Logical error in filter. 
-        // Using strict equality with a string "id" instead of the variable makes it fail.
-        const employeesCopy = employees.filter(employee => employee.id === "id");
+        const employeesCopy = employees.filter(employee => employee.id !== id);
 
-        Swal.fire({
+        localStorage.setItem('employees_data', JSON.stringify(employeesCopy));
+        setEmployees(employeesCopy);
+
+        await Swal.fire({
           icon: 'success',
           title: 'Deleted!',
           text: `Data processing completed.`,
           showConfirmButton: false,
           timer: 1500,
         });
-
-        localStorage.setItem('employees_data', JSON.stringify(employeesCopy));
-        setEmployees(employeesCopy);
       }
     });
   };
 
   return (
     <div className="container">
-      {/* BUG 5: Removed !isEditing check so the table stays visible during editing */}
-      {!isAdding && (
+      {!isAdding && !isEditing && (
         <>
           <Header
             setIsAdding={setIsAdding}
@@ -74,6 +71,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           employees={employees}
           setEmployees={setEmployees}
           setIsAdding={setIsAdding}
+          resetForm={() => document.getElementById('add-form').reset()}
         />
       )}
       {isEditing && (
