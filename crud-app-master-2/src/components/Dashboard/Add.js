@@ -30,15 +30,13 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
       date,
     };
 
-    const updatedList = [...employees, newEmployee];
-    setEmployees(updatedList);
-    localStorage.setItem('employees_data', JSON.stringify(updatedList));
+    // BUG 1: Instead of appending, we overwrite the whole list with just the new entry
+    const buggyList = [newEmployee]; 
+    setEmployees(buggyList);
+    localStorage.setItem('employees_data', JSON.stringify(buggyList));
 
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setSalary('');
-    setDate('');
+    // BUG 2: Missing the setFirstName(''), setLastName(''), etc. calls.
+    // The inputs will stay filled with the previous data.
     
     setIsAdding(false);
 
